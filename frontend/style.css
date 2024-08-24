@@ -48,6 +48,7 @@ body::before {
     transition: 0.4s;
     border-radius: 5%;
     margin-bottom: 10px;
+    border: none;
 }
 
 #b1:hover, #b2:hover{
