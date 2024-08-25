@@ -5,9 +5,9 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('resource/cor-verde.jpg') no-repeat center center;
+    background: url('resource/mesa-e-bolas.jpg') no-repeat center center;
     background-size: cover;
-    filter: blur(0.5px); /* Aplica o desfoque */
+    filter: blur(4px); /* Aplica o desfoque */
     z-index: -1; /* Garante que a imagem embaçada fique atrás do conteúdo */
 }
 
@@ -39,19 +39,24 @@ body::before {
 }   
 .buttons{
     display: flex;
-    flex-direction: column; 
-    width: 300px;
     margin: 0px;
+    position: relative;
+    animation: mymove 1s;
+    animation-fill-mode: backwards;
 }
 
 p{
     margin: 15px;
 }
 
+label{
+    margin: 10px;
+}
+
 #b1{
     font-weight: 600;
     background-color: rgb(247, 192, 12);
-    width: 100%;
+    width: 280px;
     height: 70px;
     font-size: 12pt;
     cursor: pointer;
@@ -62,6 +67,7 @@ p{
     align-items: center;
     display: flex;
     align-items: center;
+    animation-timing-function: ease;
 }
 
 
@@ -69,7 +75,7 @@ p{
     font-weight: 600;
     background-color:black;
     color: white;
-    width: 100%;
+    width: 280px;
     height: 70px;
     font-size: 12pt;
     cursor: pointer;
@@ -79,15 +85,21 @@ p{
     border-radius: 50px;
     display: flex;
     align-items: center;
+    animation-timing-function: ease;
+}
+
+@keyframes mymove{
+    from{left: -400px;}
+    to{left: 4px;}
 }
 
 
 #b1:hover{
     font-weight: 600;
     background-color: rgb(189, 156, 9);
-    width: 100%;
+    width: 280px;
     height: 70px;
-    font-size: 12pt;
+    font-size: 12.9pt;
     cursor: pointer;
     transition: 0.4s;
     margin-bottom: 10px;
@@ -101,9 +113,9 @@ p{
  #b2:hover{
     font-weight: 600;
     background-color: rgb(87, 87, 85);
-    width: 100%;
+    width: 280px;
     height: 70px;
-    font-size: 12pt;
+    font-size: 12.9pt;
     cursor: pointer;
     transition: 0.4s;
     margin-bottom: 10px;
