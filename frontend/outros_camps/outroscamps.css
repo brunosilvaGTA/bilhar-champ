@@ -27,4 +27,10 @@ body::before {
 }
 fieldset{
     background-color: white;
+    width: 100vh;
+}
+
+u{
+    display: flex;
+    justify-content: center;
 }

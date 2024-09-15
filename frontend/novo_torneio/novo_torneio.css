@@ -11,23 +11,3 @@ body::before {
     z-index: -1; /* Garante que a imagem embaçada fique atrás do conteúdo */
 }
 
-#titulo{
-    text-align: center;
-    font-size: 6rem; /* Tamanho da fonte */
-    font-weight: bold; /* Negrito para melhor efeito */
-    background: linear-gradient(45deg, rgb(255, 255, 255), rgb(255, 208, 0), rgb(253, 228, 0),rgb(255, 255, 255)); /* Gradiente dourado */
-    -webkit-background-clip: text; /* fundo dourado/ invisível */
-    color: transparent; /* Texto transparente para mostrar o gradiente */
-    font-family:cursive;
-}
-
-.cadastro{
-    color: white;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-}
-
-#login{
-    width: 260px;
-}
