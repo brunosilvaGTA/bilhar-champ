@@ -11,3 +11,9 @@ body::before {
     z-index: -1; /* Garante que a imagem embaçada fique atrás do conteúdo */
 }
 
+.formulario{
+    display: flex;
+    justify-content: center;
+    background-color: white;
+
+}

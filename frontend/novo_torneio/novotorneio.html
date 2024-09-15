@@ -7,5 +7,20 @@
     <link rel="stylesheet" href="/frontend/novo_torneio/novo_torneio.css">
 </head>
 <body>
+    <div class="formulario">
+        <form action="">
+            <div class="login">
+                <div class="nome_camp"><label for="camp_nome">Nome do Campeonato:</label></div>
+                <input type="text" placeholder="nome" required>
+            </div>
+            <div>
+                <div class="quant_player"><label for="num_jogadores">quantidade de jogadores</label></div>
+                <input type="number" max="10" min="2" required>
+            </div>
+            <div>
+                <button type= "button" onclick="alert('criando campeonato')">continuar</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
