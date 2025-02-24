@@ -1,0 +1,44 @@
+body{
+    background-image: url('/static/mesa-e-bolas.jpg');
+       ;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@keyframes brilho {
+    0% {
+      text-shadow: 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700;
+    }
+    50% {
+      text-shadow: 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700, 
+        0 0 1.5px #FFD700;
+    }
+    100% {
+      text-shadow: 
+        0 0 2px #FFD700, 
+        0 0 5px #FFD700, 
+        0 0 5px #FFD700, 
+        0 0 35px #FFD700, 
+        0 0 5px #FFD700, 
+        0 0 5px #FFD700;
+    }
+  }
+
+  #title {
+    font-size: 4em;
+    text-align: center;
+    color: #FFD700;
+    text-transform: uppercase;
+    font-weight: bold;
+    animation: brilho 1.5s infinite alternate;
+  }
