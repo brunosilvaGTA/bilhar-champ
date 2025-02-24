@@ -1,0 +1,9 @@
+p {
+    background-color: red;
+    font-family: Arial, sans-serif;
+}
+
+.important {
+    color: #333;
+    text-align: center;
+}
