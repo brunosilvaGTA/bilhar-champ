@@ -1,0 +1,6 @@
+body .torneio-form {
+    background-image: url('../images/mesa-e-bolas.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
