@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     {% block head %}
+<<<<<<< HEAD
     <title>{% block title %}{% endblock %} - Bilhar Champ</title>
     {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+=======
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <title>{% block title %}{% endblock %} - Rolang Rools</title>
+    {% endblock %}
+>>>>>>> bruno
 </head>
 <body>
     <div id="content">{% block content %}{% endblock %}</div>

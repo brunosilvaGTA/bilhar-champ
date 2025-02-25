@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask import render_template
 from flask import url_for
@@ -32,7 +31,5 @@ def cadastrar_torneio():
         return f"Nome preenchido {nome}, Qtd_participantes: {qtd_participantes}"
 
 
-
-
-if __name__=="__main__":
+if __name__ == '__main__':
     app.run(debug=True)
