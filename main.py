@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 
 app = Flask(__name__)
 app.secret_key = 'teste'
@@ -18,14 +18,17 @@ torneios.append(torneio_3)
 
 @app.route("/")
 def index():
+    #session['usuario'] = None
     return render_template('lista-torneio.html', lista = torneios)
 
 @app.route("/torneio")
 def torneio():
 
     if session and session['usuario'] == 'teste':
+        flash('Usuário está logado')
         return render_template('torneio.html')
     else:
+        flash('Usuário não está logado!')
         return redirect('/')
 
 @app.route("/cadastrar-torneio", methods = ['POST'])
@@ -51,8 +54,11 @@ def autenticar():
     session['usuario'] = usuario
 
     if 'teste' == session['usuario']:
+        flash('Usuário está logado!')
         return redirect('/')
     else:
+        session['usuario'] = None
+        flash('Usuário não está logado!')
         return render_template('login.html')
 
 if __name__ == '__main__':

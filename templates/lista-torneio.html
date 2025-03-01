@@ -9,6 +9,16 @@
 {% block content %}
     <h1>Torneios</h1>
 
+    {% with messages = get_flashed_messages() %}
+          {% if messages %} 
+              <ul id="messages" class="list-unstyled">
+              {% for message in messages %}
+                  <li class="alert alert-success">{{ message }}</li>
+              {% endfor %}
+              </ul>
+          {% endif %}
+        {% endwith %}
+
     <table>
         <thead>
             <tr>
