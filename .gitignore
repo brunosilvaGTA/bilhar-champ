@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-src/.venv/*
-=======
-src/.venv/*
->>>>>>> bruno
+./include
+./lib
+./Scripts

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Criação de Torneio{% endblock %}
+{% block content %}
+    <h1>Criação</h1>
+    <form method="POST" action="cadastrar-torneio">
+        <label for="nome">Título:</label><br>
+        <input type="text" name="nome" required><br><br>
+
+        <label for="qtdParticipantes">Quantidade de participantes:</label><br>
+        <input type="number" name="qtdParticipantes" required><br><br>
+
+        <button type="submit">Finalizar</button>
+    </form>
+{% endblock %}
