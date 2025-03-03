@@ -4,7 +4,8 @@
 
 {% block content %}
 
-    <h1>Criação</h1>
+<div class="container">
+    <h1>Cadastro de jogador</h1>
 
     {% with messages = get_flashed_messages() %}
           {% if messages %} 
@@ -17,12 +18,13 @@
         {% endwith %}
         
     <form method="POST" action="cadastrar-torneio">
-        <label for="nome">Título:</label><br>
-        <input type="text" name="nome" required><br><br>
-
-        <label for="ano">ano:</label><br>
-        <input type="number" name="ano" required><br><br>
-
-        <button type="submit">Finalizar</button>
+        <label for="nome">Nome:</label><br>
+        <input type="text" class="form-control" name="nome" required>
+        <label for="idade">Idade</label>
+        <input type="text" class="form-control" type="text" name="idade" required>
+        <button type="submit" class = "btn btn primary">cadastrar</button>
+        <button type="submit" class = "btn btn-secondary">cancelar</button>
+       
     </form>
+</div>
 {% endblock %}
