@@ -16,12 +16,53 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="cadastrar-torneio">
+    <form method="POST" action="{{ url_for('cadastrar_jogador') }}">
         <label for="nome">Nome:</label>
-        <input class="form-control" type="text" name="nome" required>
-        <label for="idade">Idade:</label>
-        <input class="form-control" type="text" name="idade" required><br>
-        <button type="submit" class="btn btn-primary">cadastrar</button>
+        <input class="form-control" type="text" name="nome" required><br>
+        <label for="data_nascimento">Data Nascimento:</label>
+        <input class="form-control" type="date" name="data_nascimento" required><br>
+        <label for="cpf">Cpf</label>
+        <input class="form-control" type="text" name="cpf" data-inputmask-mask="[9-]AAA-999" required><br>
+        <label for="cep">Cep:</label>
+        <input class="form-control" type="text" name="cep" required><br>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
         <button type="submit" class="btn btn-secondary">cancelar</button>
     </form>
+    <br>
+    
+    {% if jogadores %}
+        <h1>Jogadores adicionados</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Data Nascimento</th>
+                    <th scope="col">Cpf</th>
+                    <th scope="col">Cep</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jogador in jogadores %}
+                    <tr>
+                        <td>{{ jogador.nome }}</td>
+                        <td>{{ jogador.data_nascimento }}</td>
+                        <td>{{ jogador.cpf }}</td>
+                        <td>{{ jogador.cep }}</td>
+                        <td><form action="/detalhar-jogador" method="get"><button type="submit">Detalhe</button></form></td>
+                        <td><button type="submit">Editar</button></td>
+                        <td>
+                            <form action="/excluir-jogador" method="POST">
+                                <input type="hidden" name="nome" value="{{ jogador.nome }}"/>
+                                <button type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}    
+    
 {% endblock %}

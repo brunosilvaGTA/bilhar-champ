@@ -15,7 +15,7 @@
           {% endif %}
         {% endwith %}
         
-    <form method="POST" action="cadastrar-torneio">
+    <form method="POST" action="{{ url_for('cadastrar_torneio') }}">
         <label for="nome">Título:</label><br>
         <input type="text" name="nome" required><br><br>
 

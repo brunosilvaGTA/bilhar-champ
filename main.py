@@ -2,6 +2,23 @@ from flask import Flask, render_template, request, redirect, session, flash, url
 
 app = Flask(__name__)
 app.secret_key = 'teste'
+
+class Jogador():
+    def __init__(self, nome, data_nascimento, cpf, cep):
+        self.nome = nome
+        self.data_nascimento = data_nascimento
+        self.cpf = cpf
+        self.cep = cep
+
+
+    def validarCpf(cpf: str) -> bool:
+        pass
+
+
+    def validarCep(cep: str) -> bool:
+        pass
+
+
 class Torneio():
     def __init__(self, nome, ano):
         self.nome = nome
@@ -15,6 +32,9 @@ torneio_3 = Torneio('Torneio do Círio', 2023)
 torneios.append(torneio_1)
 torneios.append(torneio_2)
 torneios.append(torneio_3)
+
+jogadores = []
+   
 
 
 @app.route("/")
@@ -58,11 +78,40 @@ def autenticar():
     else:
         session['usuario'] = None
         flash('Usuário não está logado!')
-        return render_template(url_for('login'))
+        return redirect(url_for('login'))
     
 @app.route("/jogador")
 def jogador():
     return render_template('jogador.html')
+
+
+@app.route("/cadastrar_jogador", methods=['POST',])
+def cadastrar_jogador():
+    nome = request.form['nome']
+    data_nascimento = request.form['data_nascimento']
+    cpf = request.form['cpf']
+    cep = request.form['cep']
+
+    jogador = Jogador(nome=nome, data_nascimento=data_nascimento, cpf=cpf, cep=cep)
+    jogadores.append(jogador)
+
+    return render_template('jogador.html', jogadores=jogadores)
+
+    
+@app.route("/detalhar-jogador")
+def detalhar_jogador():
+    return render_template('detalhe-jogador.html')
+
+
+@app.route("/excluir-jogador", methods=['POST', ])
+def excluir_jogador():
+    jogador_nome = request.form['nome']
+    for index, jog in enumerate(jogadores):
+        if jog.nome == jogador_nome:
+            jogadores.pop(index)
+    flash(f'Jogador {jogador_nome} foi removido!')
+    return render_template('jogador.html', jogadores=jogadores)
+    
 
 
 @app.route("/logout")
