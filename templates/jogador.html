@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro de Jogador{% endblock %}
+
+{% block content %}
+
+<h1>Cadastro de Jogador</h1>
+
+{% with messages = get_flashed_messages() %}
+        {% if messages %} 
+            <ul id="messages" class="list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-success">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="cadastrar-torneio">
+        <label for="nome">Nome:</label>
+        <input class="form-control" type="text" name="nome" required>
+        <label for="idade">Idade:</label>
+        <input class="form-control" type="text" name="idade" required><br>
+        <button type="submit" class="btn btn-primary">cadastrar</button>
+        <button type="submit" class="btn btn-secondary">cancelar</button>
+    </form>
+{% endblock %}

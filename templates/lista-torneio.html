@@ -1,44 +1,64 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
-    {{ super() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
+{{ super() }}
+<style type="text/css">
+    .important {
+        color: #336699;
+    }
+</style>
 {% endblock %}
 {% block content %}
+<div class="row">
     <h1>Torneios</h1>
+</div>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul id="messages" class="list-unstyled">
+    {% for message in messages %}
+    <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 
-    {% with messages = get_flashed_messages() %}
-          {% if messages %} 
-              <ul id="messages" class="list-unstyled">
-              {% for message in messages %}
-                  <li class="alert alert-success">{{ message }}</li>
-              {% endfor %}
-              </ul>
-          {% endif %}
-        {% endwith %}
-
-    <table>
-        <thead>
-            <tr>
-                <td>Nome</td>
-                <td>Ano</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in lista %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Ano</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
             <tr>
                 <td>{{ item.nome }}</td>
-                
                 <td>{{ item.ano }}</td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <form action="/torneio" method="get">
-    <button type = "submit"> Cadastrar torneio </button >
-    </form>
-    <form action="/login" method = 'get'><button type="submit">Login</button></form>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<div class="row gy-2 gx-3 align-items-center">
+    <div class="col-2">
+        <form action="/torneio" method="get">
+            <button type="submit" class="btn btn-primary">Novo torneio</button>
+        </form>
+    </div>
+    <div class="col-3">
+        <form action="/torneio" method="get">
+            <button type="submit" class="btn btn-secondary">Novo Jogador</button>
+        </form>
+    </div>
+    <!-- <div class="col-auto">
+        <div class="md-end">
+            <form action="/login" method='get'>
+                <button type="submit" class="btn btn-link">Login</button>
+            </form>
+        </div>
+    </div> -->
+</div>
+
+
+<br>
 {% endblock %}
