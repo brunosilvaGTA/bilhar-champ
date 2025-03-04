@@ -1,0 +1,67 @@
+-- db_bilhar_champ.jogador definição
+
+CREATE TABLE `jogador` (
+  `ID_JOGADOR` int NOT NULL AUTO_INCREMENT,
+  `NOME` varchar(50) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `cep` varchar(15) DEFAULT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  PRIMARY KEY (`ID_JOGADOR`),
+  UNIQUE KEY `cpf` (`cpf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- db_bilhar_champ.torneio definição
+
+CREATE TABLE `torneio` (
+  `ID_TORNEIO` int NOT NULL AUTO_INCREMENT,
+  `NOME` varchar(100) NOT NULL,
+  `DIA` date DEFAULT NULL,
+  `QTD_PARTIDA` int NOT NULL,
+  PRIMARY KEY (`ID_TORNEIO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- db_bilhar_champ.sorteio definição
+
+CREATE TABLE `sorteio` (
+  `ID_SORTEIO` int NOT NULL AUTO_INCREMENT,
+  `ID_JOGADOR_1` int NOT NULL DEFAULT '0',
+  `ID_JOGADOR_2` int NOT NULL DEFAULT '0',
+  `ORDEM` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID_SORTEIO`),
+  KEY `ID_JOGADOR_1` (`ID_JOGADOR_1`),
+  KEY `ID_JOGADOR_2` (`ID_JOGADOR_2`),
+  CONSTRAINT `sorteio_ibfk_1` FOREIGN KEY (`ID_JOGADOR_1`) REFERENCES `jogador` (`ID_JOGADOR`),
+  CONSTRAINT `sorteio_ibfk_2` FOREIGN KEY (`ID_JOGADOR_2`) REFERENCES `jogador` (`ID_JOGADOR`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- db_bilhar_champ.partida definição
+
+CREATE TABLE `partida` (
+  `ID_PARTIDA` int NOT NULL AUTO_INCREMENT,
+  `ID_TORNEIO` int DEFAULT NULL,
+  `ID_SORTEIO` int DEFAULT NULL,
+  `GANHADOR` int DEFAULT NULL,
+  PRIMARY KEY (`ID_PARTIDA`),
+  KEY `ID_TORNEIO` (`ID_TORNEIO`),
+  KEY `ID_SORTEIO` (`ID_SORTEIO`),
+  KEY `GANHADOR` (`GANHADOR`),
+  CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`ID_TORNEIO`) REFERENCES `torneio` (`ID_TORNEIO`),
+  CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`ID_SORTEIO`) REFERENCES `sorteio` (`ID_SORTEIO`),
+  CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`GANHADOR`) REFERENCES `jogador` (`ID_JOGADOR`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- db_bilhar_champ.ponto definição
+
+CREATE TABLE `ponto` (
+  `ID_JOGADOR` int DEFAULT NULL,
+  `ID_PARTIDA` int DEFAULT NULL,
+  `PONTUAÇÃO` int DEFAULT '0',
+  KEY `ID_JOGADOR` (`ID_JOGADOR`),
+  KEY `ID_PARTIDA` (`ID_PARTIDA`),
+  CONSTRAINT `ponto_ibfk_1` FOREIGN KEY (`ID_JOGADOR`) REFERENCES `jogador` (`ID_JOGADOR`),
+  CONSTRAINT `ponto_ibfk_2` FOREIGN KEY (`ID_PARTIDA`) REFERENCES `partida` (`ID_PARTIDA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
