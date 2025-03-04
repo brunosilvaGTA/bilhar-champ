@@ -49,11 +49,11 @@
                 <td>{{ jogador.cpf }}</td>
                 <td>{{ jogador.cep }}</td>
                 <td>
-                    <form action="/detalhar-jogador" method="get"><button type="submit">Detalhe</button></form>
+                    <form action="{{ url_for('detalhar_jogador') }}" method="get"><button type="submit">Detalhe</button></form>
                 </td>
                 <td><button type="submit">Editar</button></td>
                 <td>
-                    <form action="/excluir-jogador" method="POST">
+                    <form action="{{ url_for('excluir_jogador') }}" method="POST">
                         <input type="hidden" name="nome" value="{{ jogador.nome }}">
                         <button type="submit">Excluir</button>
                     </form>
