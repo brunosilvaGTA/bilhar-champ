@@ -8,23 +8,60 @@
     <h1>Cadastro de jogador</h1>
 
     {% with messages = get_flashed_messages() %}
-          {% if messages %} 
-              <ul id="messages" class="list-unstyled">
-              {% for message in messages %}
-                  <li class="alert alert-success">{{ message }}</li>
-              {% endfor %}
-              </ul>
-          {% endif %}
-        {% endwith %}
-        
-    <form method="POST" action="cadastrar-torneio">
-        <label for="nome">Nome:</label><br>
-        <input type="text" class="form-control" name="nome" required>
-        <label for="idade">Idade</label>
-        <input type="text" class="form-control" type="text" name="idade" required>
-        <button type="submit" class = "btn btn primary">cadastrar</button>
-        <button type="submit" class = "btn btn-secondary">cancelar</button>
-       
+    {% if messages %}
+    <ul id="messages" class="list-unstyled">
+        {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('cadastrar_jogador') }}">
+        <label for="nome">Nome: </label>
+        <input type="text" class="form-control" name="nome" required><br>
+        <label for="data_nascimento">Data nascimento</label>
+        <input type="date" class="form-control" name="data_nascimento" required><br>
+        <label for="cpf" data-inputmask-mask="[9-]AAA-999">CPF: </label>
+        <input class="form-control" type="text" name="cpf" required><br>
+        <label for="cep">CEP: </label>
+        <input class="form-control" type="text" name="cep" required><br>
+        <br>
+        <button type="submit" class="btn btn primary">Adicionar</button>
+        <button type="submit" class="btn btn-secondary">Cancelar</button>
     </form>
+    {% if jogadores %}
+    <h1>Jogadores adicionados</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Data nascimento</th>
+                <th scope="col">CPF</th>
+                <th scope="col">CEP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for jogador in jogadores %}
+                <td>{{ jogador.nome }}</td>
+                <td>{{ jogador.data_nascimento }}</td>
+                <td>{{ jogador.cpf }}</td>
+                <td>{{ jogador.cep }}</td>
+                <td>
+                    <form action="/detalhar-jogador" method="get"><button type="submit">Detalhe</button></form>
+                </td>
+                <td><button type="submit">Editar</button></td>
+                <td>
+                    <form action="/excluir-jogador" method="POST">
+                        <input type="hidden" name="nome" value="{{ jogador.nome }}">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 {% endblock %}
