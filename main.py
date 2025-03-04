@@ -67,7 +67,7 @@ def jogador():
 
 @app.route("/logout")
 def logout():
-    session.clear()
+    session.clear() 
     flash('Usuário não está logado.')
     return redirect('/')
 
