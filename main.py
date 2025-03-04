@@ -30,6 +30,7 @@ def torneio():
     else:
         flash('Usuário não está logado!')
         return redirect('/')
+    
 
 @app.route("/cadastrar-torneio", methods = ['POST'])
 def cadastrar_torneio():
@@ -60,6 +61,10 @@ def autenticar():
         session['usuario'] = None
         flash('Usuário não está logado!')
         return render_template('login.html')
+    
+@app.route("/jogador")
+def jogador():
+    return render_template('jogador.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
