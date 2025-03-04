@@ -23,13 +23,9 @@ def index():
 
 @app.route("/torneio")
 def torneio():
-
-    if session and session['usuario'] == 'teste':
-        flash('Usuário está logado')
-        return render_template('torneio.html')
-    else:
-        flash('Usuário não está logado!')
-        return redirect('/')
+    if 'usuario' not in session:
+        return redirect('/login?novo-torneio=torneio')
+    return render_template('torneio.html')
     
 
 @app.route("/cadastrar-torneio", methods = ['POST'])
@@ -45,18 +41,20 @@ def cadastrar_torneio():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    novo_torneio = request.args.get('novo-torneio')
+    return render_template('login.html', novo_torneio=novo_torneio)
 
 @app.route('/autenticar', methods = ['POST'])
 def autenticar():
     usuario = request.form['usuario']
     senha = request.form['senha']
+    novo_torneio = request.form['novo_torneio']
 
     session['usuario'] = usuario
 
     if 'teste' == session['usuario']:
         flash('Usuário está logado!')
-        return redirect('/')
+        return redirect('/{}'.format(novo_torneio))
     else:
         session['usuario'] = None
         flash('Usuário não está logado!')
@@ -65,6 +63,13 @@ def autenticar():
 @app.route("/jogador")
 def jogador():
     return render_template('jogador.html')
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash('Usuário não está logado.')
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
