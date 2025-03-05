@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
+import json
 
 app = Flask(__name__)
 app.secret_key = 'teste'
@@ -14,6 +15,14 @@ class Jogador():
 
     def validarCep(cep:str) -> bool:
         pass
+    
+    def to_dict(self):
+        return {
+            "nome": self.nome,
+            "data_nascimento": self.data_nascimento,
+            "cpf": self.cpf,
+            "cep": self.cep
+        }
 
 class Torneio():
     def __init__(self, nome, ano):
@@ -85,7 +94,7 @@ def cadastrar_jogador():
     cep = request.form['cep']
 
     jogador = Jogador(nome = nome, data_nascimento = data_nascimento, cpf = cpf, cep = cep)
-    jogadores.append(jogador)
+    jogadores.append(jogador.to_dict())
     return render_template('jogador.html', jogadores = jogadores)
     
 @app.route("/detalhar-jogador")
@@ -94,13 +103,16 @@ def detalhar_jogador():
 
 @app.route("/excluir-jogador", methods = ['POST',])
 def excluir_jogador():
-    jogador_nome = request.form['nome'] 
+    jogador_str = request.form.get('nome') 
+    jogador_formatado = jogador_str.replace("'", '"')
+    jogador: Jogador = json.loads(jogador_formatado)
+    
+    
     for index, jog in enumerate(jogadores):
-        if jog.nome == jogador_nome:
+        if jog.get('nome') == jogador.get('nome'):
             jogadores.pop(index)
 
-    flash(f'O jogador {jogador_nome} foi removido!')
-    return jsonify(status="success")
+    return jsonify({'jogadores': jogadores, 'redirect': url_for('jogador')})
 
 @app.route("/logout")
 def logout():   

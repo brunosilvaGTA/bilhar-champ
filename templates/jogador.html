@@ -44,7 +44,7 @@
         <tbody>
             <tr>
                 {% for jogador in jogadores %}
-                <td>{{ jogador.nome }}</td>
+                <td>{{ jogador.nome }} </td>
                 <td>{{ jogador.data_nascimento }}</td>
                 <td>{{ jogador.cpf }}</td>
                 <td>{{ jogador.cep }}</td>
@@ -54,8 +54,8 @@
                 <td><button type="submit">Editar</button></td>
                 <td>
                     <!--<form action="{{ url_for('excluir_jogador') }}" method="POST"> -->
-                        <input type="hidden" name="nome" value="{{ jogador.nome }}">
-                        <button class="jogador-excluir" type="submit">Excluir</button>
+                        <!-- <input type="hidden" name="nome" value="{{ jogador.nome }}">-->
+                        <button class="jogador-excluir" value="{{ jogador }}">Excluir</button>
                     <!--</form>-->
                 </td>
             </tr>
