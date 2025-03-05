@@ -54,10 +54,10 @@
                         <td><form action="/detalhar-jogador" method="get"><button type="submit">Detalhe</button></form></td>
                         <td><button type="submit">Editar</button></td>
                         <td>
-                            <form action="/excluir-jogador" method="POST">
+                            <!-- <form action="/excluir-jogador" method="POST"> --> 
                                 <input type="hidden" name="nome" value="{{ jogador.nome }}"/>
-                                <button type="submit">Excluir</button>
-                            </form>
+                                <button class="excluir-jogador"  type="submit">Excluir</button>
+                            <!-- </form> -->
                         </td>
                     </tr>
                 {% endfor %}

@@ -105,7 +105,7 @@ def detalhar_jogador():
 
 @app.route("/excluir-jogador", methods=['POST', ])
 def excluir_jogador():
-    jogador_nome = request.form['nome']
+    jogador_nome = request.form.get('nome')
     for index, jog in enumerate(jogadores):
         if jog.nome == jogador_nome:
             jogadores.pop(index)
