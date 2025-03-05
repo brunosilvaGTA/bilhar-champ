@@ -1,24 +1,24 @@
 $(".jogador-excluir").click(function () {
+
+  let idJogador = $(this).attr("value") 
+  let listItem = $(this).parent().parent()
+
+
   $.ajax({
     type: 'POST',
     url: "/excluir-jogador",
-    data: { nome: 'teste' },
+    data: {'id_jogador': idJogador },
     dataType: "text",
-    success: function (data) {
-      console.log("Jogador Excluído");
-      event.preventDefault()
-      redirecionar_jogador()
+    success: function() {
+      listItem.remove(); 
+      $(".alert-danger").css("visibility", "visible");
+      setTimeout(function() {
+        $(".alert-danger").css("visibility", "hidden")
+      }, 1000);
+    },
+    error: function(error){
+      console.log("Error", error)
     }
   });
 });
 
-function redirecionar_jogador() {
-  $.ajax({
-    type: 'GET',
-    url: "/jogador",
-    dataType: "text",
-    success: function (data) {
-      console.log("Jogador Excluído");
-    }
-  });
-}

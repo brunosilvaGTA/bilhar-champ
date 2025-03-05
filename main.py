@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
+import json
+import mysql.connector
+
 
 app = Flask(__name__)
 app.secret_key = 'teste'
 
 class Jogador():
-    def __init__(self, nome, data_nascimento, cpf, cep):
+    def __init__(self, id_jogador = None, nome = None, data_nascimento = None, cpf = None, cep = None):
+        self.id_jogador = id_jogador
         self.nome = nome
         self.data_nascimento = data_nascimento
         self.cpf = cpf
@@ -14,6 +18,17 @@ class Jogador():
 
     def validarCep(cep:str) -> bool:
         pass
+
+    def to_dict(self):
+        return {
+            "id_jogador": self.id_jogador,
+            "nome": self.nome,
+            "data_nascimento": self.data_nascimento,
+            "cpf": self.cpf,
+            "cep": self.cep
+        }
+    def convert_to_object(self, jogador: tuple):
+        return Jogador(jogador[0], jogador[1], jogador[2],jogador[3], jogador[4])
 
 class Torneio():
     def __init__(self, nome, ano):
@@ -28,12 +43,13 @@ torneio_3 = Torneio('Torneio do Círio', 2023)
 torneios.append(torneio_1)
 torneios.append(torneio_2)
 torneios.append(torneio_3)
-jogadores = []
+jogadores:list = []
 
 @app.route("/")
 def index():
     #session['usuario'] = None
     return render_template('lista-torneio.html', lista = torneios)
+
 
 @app.route("/torneio")
 def torneio():
@@ -41,6 +57,7 @@ def torneio():
     if 'usuario' not in session or session['usuario'] == None:
         return redirect('/login?novo-torneio=torneio')
     return render_template('torneio.html')
+
 
 @app.route("/cadastrar-torneio", methods = ['POST'])
 def cadastrar_torneio():
@@ -52,10 +69,12 @@ def cadastrar_torneio():
         
     return redirect(url_for('index'))
 
+
 @app.route('/login')
 def login():
     novo_torneio = request.args.get('novo-torneio')
     return render_template('login.html', novo_torneio=url_for('torneio'))
+
 
 @app.route('/autenticar', methods = ['POST'])
 def autenticar():
@@ -73,40 +92,75 @@ def autenticar():
         flash('Usuário não está logado!')
         return redirect(url_for('login'))
     
+
 @app.route("/jogador")
 def jogador():
+    cnx = load_connection()
+    cursor = cnx.cursor()
+    cursor.execute("SELECT id_jogador, nome, data_nascimento, cpf, cep FROM jogador")
+    jogadores_recuperados = cursor.fetchall()
+    if len(jogadores_recuperados) > 0:
+        global jogadores
+        for jog in jogadores_recuperados:
+            jogador = Jogador()
+            jogador_convertido = jogador.convert_to_object(jog)
+            jogadores.append(jogador_convertido)
+    else:
+        jogadores = []
     return render_template('jogador.html', jogadores = jogadores)
+
 
 @app.route("/cadastrar_jogador", methods = ['POST'])
 def cadastrar_jogador():
+    global jogadores
     nome = request.form['nome']
     data_nascimento = request.form['data_nascimento']
     cpf = request.form['cpf']
     cep = request.form['cep']
-
     jogador = Jogador(nome = nome, data_nascimento = data_nascimento, cpf = cpf, cep = cep)
-    jogadores.append(jogador)
+    #jogadores.append(jogador.to_dict())
+    # cadastrar jogador na base de dados
+    cnx = load_connection()
+    cursor = cnx.cursor()
+    insert_jogador = "INSERT INTO JOGADOR(nome, data_nascimento, cpf, cep) VALUES (%s, %s, %s, %s)"
+    cursor.execute(insert_jogador,
+                (jogador.nome, jogador.data_nascimento, jogador.cpf, jogador.cep))
+    cnx.commit()
+    cnx.close()
     return render_template('jogador.html', jogadores = jogadores)
-    
+
+
 @app.route("/detalhar-jogador")
 def detalhar_jogador():
     return render_template('detalhe-jogador.html')
 
+
 @app.route("/excluir-jogador", methods = ['POST',])
 def excluir_jogador():
-    jogador_nome = request.form['nome'] 
+    id_jogador = int(request.form.get('id_jogador'))
+    #excluir jogador da base de dados pelo ID
     for index, jog in enumerate(jogadores):
-        if jog.nome == jogador_nome:
+        if jog.get('nome') == jogador.get('nome'):
             jogadores.pop(index)
+    return jsonify({'jogadores': jogadores, 'redirect': url_for('jogador')})
 
-    flash(f'O jogador {jogador_nome} foi removido!')
-    return jsonify(status="success")
 
 @app.route("/logout")
 def logout():   
     session.clear()
     flash('O usuário não está logado.')
     return redirect('/index')
+
+
+def load_connection():
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        database="db_bilhar_champ",
+        user="root",
+        password="root"
+    )
+    return cnx
 
 if __name__ == '__main__':
     app.run(debug=True)
