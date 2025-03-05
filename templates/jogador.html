@@ -53,10 +53,10 @@
                 </td>
                 <td><button type="submit">Editar</button></td>
                 <td>
-                    <form action="{{ url_for('excluir_jogador') }}" method="POST">
+                    <!--<form action="{{ url_for('excluir_jogador') }}" method="POST"> -->
                         <input type="hidden" name="nome" value="{{ jogador.nome }}">
-                        <button type="submit">Excluir</button>
-                    </form>
+                        <button class="jogador-excluir" type="submit">Excluir</button>
+                    <!--</form>-->
                 </td>
             </tr>
             {% endfor %}

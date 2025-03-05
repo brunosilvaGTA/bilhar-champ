@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
 
 app = Flask(__name__)
 app.secret_key = 'teste'
@@ -100,7 +100,7 @@ def excluir_jogador():
             jogadores.pop(index)
 
     flash(f'O jogador {jogador_nome} foi removido!')
-    return render_template('jogador.html', jogadores=jogadores)
+    return jsonify(status="success")
 
 @app.route("/logout")
 def logout():   
