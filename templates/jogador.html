@@ -5,6 +5,10 @@
 {% block content %}
 
 <div class="container">
+    <div class="alert alert-danger" role="alert">
+        Jogador excluido com sucesso!
+    </div>
+
     <h1>Cadastro de jogador</h1>
 
     {% with messages = get_flashed_messages() %}
@@ -35,6 +39,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Data nascimento</th>
                 <th scope="col">CPF</th>
@@ -44,6 +49,7 @@
         <tbody>
             <tr>
                 {% for jogador in jogadores %}
+                <td>#{{ jogador.id_jogador }} </td>
                 <td>{{ jogador.nome }} </td>
                 <td>{{ jogador.data_nascimento }}</td>
                 <td>{{ jogador.cpf }}</td>
@@ -55,7 +61,7 @@
                 <td>
                     <!--<form action="{{ url_for('excluir_jogador') }}" method="POST"> -->
                         <!-- <input type="hidden" name="nome" value="{{ jogador.nome }}">-->
-                        <button class="jogador-excluir" value="{{ jogador }}">Excluir</button>
+                        <button class="jogador-excluir" value="{{ jogador.id_jogador }}">Excluir</button>
                     <!--</form>-->
                 </td>
             </tr>

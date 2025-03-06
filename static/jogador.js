@@ -2,17 +2,20 @@
  
 $(".jogador-excluir").click(function () {
 
-   
-  let itemValue = $(this).attr("value")
+  let idJogador = $(this).attr("value")
   let listItem = $(this).parent().parent()
   
   $.ajax({
     type: 'POST',
     url: "/excluir-jogador",
-    data: {'nome': itemValue },
+    data: {'id_jogador': idJogador },
     dataType: "text",
-    success: function (data) {
+    success: function() {
       listItem.remove();
+      $(".alert-danger").css("visibility", "visible");
+      setTimeout(function() {
+        $(".alert-danger").css("visibility", "hidden")
+      }, 1000);
     },
       error: function(error) {
         console.log("Error:", error);
@@ -20,13 +23,3 @@ $(".jogador-excluir").click(function () {
   });
 });
 
-// function redirecionar_jogador() {
-//   $.ajax({
-//     type: 'GET',
-//     url: "/jogador",
-//     dataType: "text",
-//     success: function (data) {
-//       console.log("Jogador Excluído");
-//     }
-//   });
-// }
