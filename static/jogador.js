@@ -3,7 +3,6 @@ $(".jogador-excluir").click(function () {
   let idJogador = $(this).attr("value") 
   let listItem = $(this).parent().parent()
 
-
   $.ajax({
     type: 'POST',
     url: "/excluir-jogador",

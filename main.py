@@ -101,6 +101,7 @@ def jogador():
     jogadores_recuperados = cursor.fetchall()
     if len(jogadores_recuperados) > 0:
         global jogadores
+        jogadores = []
         for jog in jogadores_recuperados:
             jogador = Jogador()
             jogador_convertido = jogador.convert_to_object(jog)
@@ -127,28 +128,31 @@ def cadastrar_jogador():
                 (jogador.nome, jogador.data_nascimento, jogador.cpf, jogador.cep))
     cnx.commit()
     cnx.close()
-    return render_template('jogador.html', jogadores = jogadores)
-
+    return redirect("/jogador")
 
 @app.route("/detalhar-jogador")
 def detalhar_jogador():
+    
     return render_template('detalhe-jogador.html')
 
 
 @app.route("/excluir-jogador", methods = ['POST',])
 def excluir_jogador():
-    id_jogador = int(request.form.get('id_jogador'))
-    #excluir jogador da base de dados pelo ID
-    for index, jog in enumerate(jogadores):
-        if jog.get('nome') == jogador.get('nome'):
-            jogadores.pop(index)
-    return jsonify({'jogadores': jogadores, 'redirect': url_for('jogador')})
+    id_jogador = tuple(request.form.get('id_jogador'))
+    cnx = load_connection()
+    cursor = cnx.cursor()
+    deletar_jogador = "DELETE FROM jogador WHERE id_jogador = (%s)"
+    cursor.execute(deletar_jogador, id_jogador)
+    cnx.commit()
+
+    return jsonify({'redirect': url_for('jogador')})
 
 
 @app.route("/logout")
 def logout():   
     session.clear()
     flash('O usuário não está logado.')
+
     return redirect('/index')
 
 
