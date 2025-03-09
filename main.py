@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
 import json
 import mysql.connector
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from wtforms import Form, StringField, validators, DateField
 
 
 app = Flask(__name__)
 app.secret_key = 'teste'
+
+class EditarJogadorForm(Form):
+    nome = StringField('Nome', [validators.length(min=4, max=25)])
+    data_nascimento = DateField('Data_Nascimento', format='%dd/%MM/%yyyy')
+    cpf = StringField('Cpf', [validators.length(max=11)])
+    cep = StringField('Cep')
 
 class Jogador():
     def __init__(self, id_jogador = None, nome = None, data_nascimento = None, cpf = None, cep = None):
@@ -156,6 +162,17 @@ def logout():
 
     return redirect('/index')
 
+@app.route("/editar-jogador", methods=['GET',])
+def editarJogador():
+    form = EditarJogadorForm(request.form)
+    return render_template('editar-jogador-form.html', form=form)
+
+@app.route('/editar-jogador-form', methods = ['POST',])
+def editarJogadorForm():
+    form = editarJogadorForm(request.form)
+    if request.method == 'POST' and form.validate():
+        jogador  = Jogador(form.nome.data, form.data_nascimento, form.cpf.data, form.cep.expandtabs())
+        return redirect(url_for('jogador'))
 
 def load_connection():
     cnx = mysql.connector.connect(
@@ -166,6 +183,7 @@ def load_connection():
         password="root"
     )
     return cnx
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
