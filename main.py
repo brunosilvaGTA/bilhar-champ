@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
 import json
 import mysql.connector
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 
 app = Flask(__name__)
