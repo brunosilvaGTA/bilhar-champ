@@ -2,10 +2,21 @@ from flask import Flask, render_template, request, redirect, session, flash, url
 import json
 import mysql.connector
 from typing import Type
+from wtforms import Form, StringField, validators, DateField
+
+
 
 
 app = Flask(__name__)
 app.secret_key = 'teste'
+
+
+class EditarJogadorForm(Form):
+    nome = StringField('Nome', [validators.length(min=4, max=25)])
+    data_nascimento = DateField('Data Nascimento', format='%dd/%MM/%yyyy')
+    cpf = StringField('Cpf', [validators.length(max=11)])
+    cep = StringField('Cep')
+
 
 class Jogador():
     def __init__(self, id_jogador = None, nome = None, data_nascimento = None, cpf = None, cep = None):
@@ -101,6 +112,7 @@ def jogador():
     
     if len(jogadores_recuperados) > 0:
         global jogadores
+        jogadores = []
         for jog in jogadores_recuperados:
             jogador = Jogador()
             jogador_convertido = jogador.convert_to_objetc(jog)
@@ -129,11 +141,9 @@ def cadastrar_jogador():
     cursor.execute(insert_jogador,
                (jogador.nome, jogador.data_nascimento, jogador.cpf, jogador.cep))
     cnx.commit()
-    
-    jogadores.append(jogador)
     cnx.close()
     
-    return render_template('jogador.html', jogadores=jogadores)
+    return redirect('/jogador')
 
     
 @app.route("/detalhar-jogador")
@@ -143,15 +153,17 @@ def detalhar_jogador():
 
 @app.route("/excluir-jogador", methods = ['POST',])
 def excluir_jogador():
-    id_jogador =  int(request.form.get('id_jogador')) 
-
-    #deletar da base de dados
+    id_jogador =  tuple(request.form.get('id_jogador')) 
     
-    for index, jog in enumerate(jogadores):
-        if jog.get('nome') == jogador.get('nome'):
-            jogadores.pop(index)
-
-    return jsonify({'jogadores': jogadores, 'redirect': url_for('jogador')})
+    cnx = load_conection()
+    cursor = cnx.cursor()
+    
+    deletar_jogador = "DELETE FROM jogador WHERE id_jogador = (%s)"
+    
+    cursor.execute(deletar_jogador, id_jogador)
+    cnx.commit()
+    
+    return jsonify({'redirect': url_for('jogador')})
 
 @app.route("/logout")
 def logout():   
@@ -160,6 +172,22 @@ def logout():
     return redirect('/index')
 
 
+@app.route("/editar-jogador", methods=['GET',])
+def editarJogador():
+    form = EditarJogadorForm(request.form)
+    return render_template('editar-jogador-form.html', form=form)
+    
+
+@app.route("/editar-jogador-form", methods=['POST',])
+def editarJogadorForm():
+    form = EditarJogadorForm(request.form)
+    if request.method == 'POST' and form.validate():
+        jogador = Jogador(form.nome.data, form.data_nascimento.data, form.cpf.data, form.cep.data)
+        cnx = load_conection()
+        # atualizar jogador
+        return redirect(url_for('jogador'))
+    
+    
 def load_conection():
     cnx = mysql.connector.connect(
         host="127.0.0.1",
@@ -167,8 +195,7 @@ def load_conection():
         database="db_bilhar_champ",
         user="root",
         password="123",
-    )
-    
+    ) 
     return cnx
 
 

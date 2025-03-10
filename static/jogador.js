@@ -23,3 +23,23 @@ $(".jogador-excluir").click(function () {
   });
 });
 
+
+
+$(".jogador-editar").click(function () {
+
+  let idjogador = $(this).attr("value")
+  
+  $.ajax({
+    type: 'GET',
+    url: "/editar-jogador",
+    data: {'id_jogador': idjogador },
+    dataType: "text",
+    success: function() {
+      
+    },
+      error: function(error) {
+        console.log("Error:", error);
+    }
+  });
+});
+

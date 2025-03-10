@@ -4,6 +4,7 @@
 <head>
     {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css.map') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jogador.css') }}" />
 
     <title id="title">{% block title %}{% endblock %} - Rolang Rools</title>
@@ -19,6 +20,7 @@
     </div>
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='jogador.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.js.map') }}"></script>
 </body>
-
 </html>

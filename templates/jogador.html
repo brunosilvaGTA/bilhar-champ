@@ -54,16 +54,9 @@
                 <td>{{ jogador.data_nascimento }}</td>
                 <td>{{ jogador.cpf }}</td>
                 <td>{{ jogador.cep }}</td>
-                <td>
-                    <form action="{{ url_for('detalhar_jogador') }}" method="get"><button type="submit">Detalhe</button></form>
-                </td>
-                <td><button type="submit">Editar</button></td>
-                <td>
-                    <!--<form action="{{ url_for('excluir_jogador') }}" method="POST"> -->
-                        <!-- <input type="hidden" name="nome" value="{{ jogador.nome }}">-->
-                        <button class="jogador-excluir" value="{{ jogador.id_jogador }}">Excluir</button>
-                    <!--</form>-->
-                </td>
+                <td><form action="{{ url_for('detalhar_jogador') }}" method="get"><button type="submit">Detalhe</button></form></td>
+                <td><button class="jogador-editar" value="{{ jogador.id_jogador }}">Editar</button></td>
+                <td><button class="jogador-excluir" value="{{ jogador.id_jogador }}">Excluir</button></td>
             </tr>
             {% endfor %}
         </tbody>
