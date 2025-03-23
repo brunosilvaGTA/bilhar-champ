@@ -1,13 +1,11 @@
 from flask import Flask
-from mysql.connector import MySQLConnection
-import mysql
 
 app = Flask(__name__)
 app.secret_key = 'teste'
         
 app.config.from_pyfile('config.py')
 
-conexao: mysql = app.config['CONEXAO']
+conexao = app.config['DB_MYSQL_CONFIG']
 
 from views import *
 

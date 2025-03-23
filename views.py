@@ -2,8 +2,7 @@ from flask import render_template, request, redirect, session, flash, url_for, j
 from models import models
 from main import app, conexao
 
-import mysql
-import typing
+import mysql.connector
 
 torneios = []
 torneio_1 = models.Torneio('Rolang Rools', 2025)
@@ -16,12 +15,10 @@ jogadores: list = []
 
 @app.route("/")
 def index():
-    #session['usuario'] = None
     return render_template('lista-torneio.html', lista = torneios)
 
 @app.route("/torneio")
 def torneio():
-
     if 'usuario' not in session or session['usuario'] == None:
         return redirect('/login?novo-torneio=torneio')
     return render_template('torneio.html')
@@ -60,11 +57,7 @@ def autenticar():
 @app.route("/jogador")
 def jogador():    
     
-    cnx = mysql.connector.connect(host="127.0.0.1",
-                                    port=3306,
-                                    database="db_bilhar_champ",
-                                    user="root",
-                                    password="123")
+    cnx = mysql.connector.connect(**conexao)
     cursor = cnx.cursor()    
     cursor.execute("SELECT id_jogador, nome, data_nascimento, cpf, cep FROM jogador")
     
@@ -92,35 +85,31 @@ def cadastrar_jogador():
 
     jogador = models.Jogador(nome = nome, data_nascimento = data_nascimento, cpf = cpf, cep = cep)
     
-    # cadastrar jogador na base
-    # cnx: typing[MySQLConnection] = conexao
-    cursor = conexao.cursor()
+    cnx = mysql.connector.connect(**conexao)
+    cursor = cnx.cursor()
     
     insert_jogador = "INSERT INTO jogador (nome, data_nascimento, cpf, cep) VALUES (%s, %s, %s, %s)"
     
     cursor.execute(insert_jogador,
                (jogador.nome, jogador.data_nascimento, jogador.cpf, jogador.cep))
-    conexao.commit()
-    conexao.close()
+    cnx.commit()
+    cnx.close()
     
     return redirect('/jogador')
 
     
 @app.route("/detalhar-jogador")
-def detalhar_jogador():
+def detalhar():
     return render_template('detalhe-jogador.html')
 
 
-@app.route("/excluir-jogador", methods = ['POST',])
-def excluir_jogador():
-    id_jogador =  tuple(request.form.get('id_jogador')) 
-    
-    cnx = models
+@app.route("/excluir-jogador",  methods=['POST', ])
+def excluir():
+    id = request.form.get('id_jogador')
+    cnx = mysql.connector.connect(**conexao)
     cursor = cnx.cursor()
-    
-    deletar_jogador = "DELETE FROM jogador WHERE id_jogador = (%s)"
-    
-    cursor.execute(deletar_jogador, id_jogador)
+
+    cursor.execute("DELETE FROM jogador WHERE id_jogador = %s", (id, ))
     cnx.commit()
     
     return jsonify({'redirect': url_for('jogador')})
@@ -132,17 +121,14 @@ def logout():
     return redirect('/index')
 
 
-@app.route("/editar-jogador", methods=['GET',])
-def editarJogador():
-    form = request.form
-    return render_template('editar-jogador-form.html', form=form)
+@app.route("/editar-jogador/<int:id>")
+def editar(id):
+    cnx = mysql.connector.connect(**conexao)
+    cursor = cnx.cursor()
+    cursor.execute('SELECT * FROM jogador WHERE id_jogador = %s', (id,))
+    retorno = cursor.fetchone()
+    jogador = models.Jogador(id_jogador=retorno[0], nome=retorno[1], cpf=retorno[2], cep=retorno[3], data_nascimento=retorno[4])
+    cnx.close()
     
-
-@app.route("/editar-jogador-form", methods=['POST',])
-def editarJogadorForm():
-    form = request.form
-    if request.method == 'POST':
-        jogador = models.Jogador(form.nome.data, form.data_nascimento.data, form.cpf.data, form.cep.data)
-        cnx = conexao
-        # atualizar jogador
-        return redirect(url_for('jogador'))
+    return render_template('editar-jogador-form.html', jogador=jogador)
+    

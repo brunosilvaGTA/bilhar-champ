@@ -46,23 +46,14 @@
 </table>
 <div class="row align-items-center">
     <div class="col-auto">
-        <form action="{{ url_for('torneio') }}" method="get">
-            <button type="submit" class="btn btn-primary"> Novo torneio </button>
-        </form>
+        <a class="btn btn-primary" href="{{ url_for('torneio') }}"> Novo Torneio</a>
     </div>
     <div class="col-auto">
-        <form action="{{ url_for('jogador') }}" method="get">
-            <button type="submit" class="btn btn-secondary"> Novo jogador </button>
-        </form>
+        <a class="btn btn-success" href="{{ url_for('jogador') }}"> Novo jogador</a>
     </div>
-
-    <br>
-
     <div class="col-auto" id="btn_login">
-        <form action="{{ url_for('login') }}" method='get' class="btn btn link"><button type="submit">Login</button></form>
+        <a class="btn btn-warning" href="{{ url_for('login') }}">Login</a>
     </div>
-
-
 </div>
 
 {% endblock %}

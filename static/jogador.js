@@ -12,6 +12,11 @@ $(".jogador-excluir").click(function () {
     dataType: "text",
     success: function() {
       listItem.remove();
+      let qtdItems = $(".table-responsive table tbody tr").length
+      if (qtdItems == 0) {
+          $(".table-responsive").remove()
+      }
+      
       $(".alert-danger").css("visibility", "visible");
       setTimeout(function() {
         $(".alert-danger").css("visibility", "hidden")
@@ -31,8 +36,7 @@ $(".jogador-editar").click(function () {
   
   $.ajax({
     type: 'GET',
-    url: "/editar-jogador",
-    data: {'id_jogador': idjogador },
+    url: "/editar-jogador/".concat(idjogador),
     dataType: "text",
     success: function() {
       

@@ -1,19 +1,46 @@
-
 {% extends "base.html" %}
 
-{% block title %}Criação de Torneio teste{% endblock %}
+{% block title %}Editar Jogador{% endblock %}
 
 {% block content %}
 
-    {% from "_formhelpers.html" import render_field %}
-    <form method=post>
-        <dl>
-            {{ render_field(form.nome) }}
-            {{ render_field(form.data_nascimento) }}
-            {{ render_field(form.cpf) }}
-            {{ render_field(form.cep) }}
-        </dl>
-        <p><input type=submit value=Register>
-    </form>
-{% endblock %}
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul id="messages" class="list-unstyled">
+        {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
+    <h1>Editar Jogador</h1>
+    
+    <form method="POST">
+        <fieldset>
+            <input type="hidden" name="id_jogador" value="{{ jogador.id_jogador }}"><br>
+            <div class="form-group">
+                <label for="nome" class="form-label">Nome: </label>
+                <input type="text" class="form-control" id="nome" name="nome" value="{{ jogador.nome }}"><br>
+            </div>
+            <div class="form-group">
+                <label for="data_nascimento" class="form-label">Data nascimento</label>
+                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" value="{{ jogador.data_nascimento }}"><br>
+            </div>
+            <div class="form-group">
+                <label for="cpf" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" value="{{ jogador.cpf }}"><br>
+            </div>
+            <div class="form-group">
+                <label for="cep">CEP: </label>
+                <input class="form-control" type="text" name="cep" value="{{ jogador.cep }}"><br>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+                <a href="{{ url_for('jogador') }}" class="btn btn-danger">Cancelar</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
